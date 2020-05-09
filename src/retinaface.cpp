@@ -106,8 +106,8 @@ RetinaFace::~RetinaFace() {
 }
 
 int RetinaFace::Initial(std::string model_path) {
-  std::string parampath = model_path + "/retiface_carton.param";
-  std::string binpath = model_path + "/retiface_carton.bin";
+  std::string parampath = model_path + "/retinaface_face.param";
+  std::string binpath = model_path + "/retinaface_face.bin";
   net_->load_param(parampath.c_str());
   net_->load_model(binpath.c_str());
 }
@@ -137,8 +137,8 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
 
   ncnn::Mat score_blob, bbox_blob;
   ex.extract("output0", bbox_blob); 
-  ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句，
-  //ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
+ // ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句，
+  ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
   //post-process
   ncnn::Mat out_loc;
   out_loc.create(4,bbox_blob.h);
@@ -181,7 +181,7 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   //上面的操作是在640×640的图片上做的（先pad图片到正方形，再resize到640*640)
   //因此下面的操作是将检测框，反映射回到原图像的尺寸
   float scale = long_size*1.0/width_; //width_与height_相等
-  
+
   for (int i = 0; i < picked.size(); i++) {
     FaceObject face = tempfaces[picked[i]];
     //反映射回pad_img

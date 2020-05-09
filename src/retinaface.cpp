@@ -181,6 +181,7 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   //上面的操作是在640×640的图片上做的（先pad图片到正方形，再resize到640*640)
   //因此下面的操作是将检测框，反映射回到原图像的尺寸
   float scale = long_size*1.0/width_; //width_与height_相等
+  
   for (int i = 0; i < picked.size(); i++) {
     FaceObject face = tempfaces[picked[i]];
     //反映射回pad_img

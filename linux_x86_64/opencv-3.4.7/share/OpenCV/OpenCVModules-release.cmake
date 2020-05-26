@@ -25,16 +25,6 @@ set_target_properties(libtiff PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS libtiff )
 list(APPEND _IMPORT_CHECK_FILES_FOR_libtiff "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibtiff.a" )
 
-# Import target "libwebp" for configuration "Release"
-set_property(TARGET libwebp APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(libwebp PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "C"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibwebp.a"
-  )
-
-list(APPEND _IMPORT_CHECK_TARGETS libwebp )
-list(APPEND _IMPORT_CHECK_FILES_FOR_libwebp "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibwebp.a" )
-
 # Import target "libjasper" for configuration "Release"
 set_property(TARGET libjasper APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(libjasper PROPERTIES
@@ -45,6 +35,16 @@ set_target_properties(libjasper PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS libjasper )
 list(APPEND _IMPORT_CHECK_FILES_FOR_libjasper "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibjasper.a" )
 
+# Import target "libpng" for configuration "Release"
+set_property(TARGET libpng APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(libpng PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "C"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibpng.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS libpng )
+list(APPEND _IMPORT_CHECK_FILES_FOR_libpng "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibpng.a" )
+
 # Import target "IlmImf" for configuration "Release"
 set_property(TARGET IlmImf APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(IlmImf PROPERTIES
@@ -54,16 +54,6 @@ set_target_properties(IlmImf PROPERTIES
 
 list(APPEND _IMPORT_CHECK_TARGETS IlmImf )
 list(APPEND _IMPORT_CHECK_FILES_FOR_IlmImf "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/libIlmImf.a" )
-
-# Import target "libprotobuf" for configuration "Release"
-set_property(TARGET libprotobuf APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(libprotobuf PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibprotobuf.a"
-  )
-
-list(APPEND _IMPORT_CHECK_TARGETS libprotobuf )
-list(APPEND _IMPORT_CHECK_FILES_FOR_libprotobuf "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/liblibprotobuf.a" )
 
 # Import target "quirc" for configuration "Release"
 set_property(TARGET quirc APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

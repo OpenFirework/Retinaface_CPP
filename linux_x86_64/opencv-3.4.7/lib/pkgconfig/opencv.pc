@@ -1,6 +1,6 @@
 # Package Information for pkg-config
 
-prefix=`pwd'/linux_x86_64/opencv-3.4.7
+prefix=./linux_x86_64/opencv-3.4.7
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir_old=${prefix}/include/opencv
@@ -9,6 +9,6 @@ includedir_new=${prefix}/include
 Name: OpenCV
 Description: Open Source Computer Vision Library
 Version: 3.4.7
-Libs: -L${exec_prefix}/lib -lopencv_world
-Libs.private: -L${exec_prefix}/share/OpenCV/3rdparty/lib -llibprotobuf -llibjpeg-turbo -llibwebp -llibtiff -llibjasper -lIlmImf -littnotify -lquirc -lippicv -L/usr/lib/x86_64-linux-gnu -lpng -lz -ldl -lm -lpthread -lrt
+Libs: -L${exec_prefix}/lib -lopencv_world -L${exec_prefix}/share/OpenCV/3rdparty/lib -llibjpeg-turbo -llibpng -llibtiff -llibjasper -lIlmImf -littnotify -L/usr/lib/x86_64-linux-gnu -lz -ldl -lm -lpthread -lrt
+Libs.private: -L${exec_prefix}/share/OpenCV/3rdparty/lib -llibjpeg-turbo -llibpng -llibtiff -llibjasper -lIlmImf -littnotify -L/usr/lib/x86_64-linux-gnu -lz -ldl -lm -lpthread -lrt
 Cflags: -I${includedir_old} -I${includedir_new}

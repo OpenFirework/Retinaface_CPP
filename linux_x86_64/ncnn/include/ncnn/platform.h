@@ -20,12 +20,12 @@
 #define NCNN_OPENCV 0
 #define NCNN_BENCHMARK 0
 #define NCNN_PIXEL 1
-#define NCNN_PIXEL_ROTATE 0
+#define NCNN_PIXEL_ROTATE 1
 #define NCNN_VULKAN 0
 #define NCNN_REQUANT 0
-#define NCNN_AVX2 1
+#define NCNN_AVX2 0
 
-#ifdef _WIN32
+#if (defined _WIN32 && !(defined __MINGW32__))
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <process.h>
@@ -33,9 +33,13 @@
 #include <pthread.h>
 #endif
 
+#if __ANDROID_API__ >= 26
+#define VK_USE_PLATFORM_ANDROID_KHR
+#endif // __ANDROID_API__ >= 26
+
 namespace ncnn {
 
-#ifdef _WIN32
+#if (defined _WIN32 && !(defined __MINGW32__))
 class Mutex
 {
 public:
@@ -71,7 +75,7 @@ private:
     Mutex& mutex;
 };
 
-#if _WIN32
+#if (defined _WIN32 && !(defined __MINGW32__))
 class ConditionVariable
 {
 public:
@@ -97,7 +101,7 @@ private:
 };
 #endif // _WIN32
 
-#if _WIN32
+#if (defined _WIN32 && !(defined __MINGW32__))
 static unsigned __stdcall start_wrapper(void* args);
 class Thread
 {

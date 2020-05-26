@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget libjpeg-turbo libtiff libwebp libjasper IlmImf libprotobuf quirc ittnotify opencv_world)
+foreach(_expectedTarget libjpeg-turbo libtiff libjasper libpng IlmImf quirc ittnotify opencv_world)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -59,11 +59,15 @@ set_target_properties(libtiff PROPERTIES
   INTERFACE_LINK_LIBRARIES "/usr/lib/x86_64-linux-gnu/libz.so"
 )
 
-# Create imported target libwebp
-add_library(libwebp STATIC IMPORTED)
-
 # Create imported target libjasper
 add_library(libjasper STATIC IMPORTED)
+
+# Create imported target libpng
+add_library(libpng STATIC IMPORTED)
+
+set_target_properties(libpng PROPERTIES
+  INTERFACE_LINK_LIBRARIES "/usr/lib/x86_64-linux-gnu/libz.so"
+)
 
 # Create imported target IlmImf
 add_library(IlmImf STATIC IMPORTED)
@@ -71,9 +75,6 @@ add_library(IlmImf STATIC IMPORTED)
 set_target_properties(IlmImf PROPERTIES
   INTERFACE_LINK_LIBRARIES "/usr/lib/x86_64-linux-gnu/libz.so"
 )
-
-# Create imported target libprotobuf
-add_library(libprotobuf STATIC IMPORTED)
 
 # Create imported target quirc
 add_library(quirc STATIC IMPORTED)
@@ -89,7 +90,7 @@ set_target_properties(ittnotify PROPERTIES
 add_library(opencv_world STATIC IMPORTED)
 
 set_target_properties(opencv_world PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:dl>;\$<LINK_ONLY:m>;\$<LINK_ONLY:pthread>;\$<LINK_ONLY:rt>;\$<LINK_ONLY:ippicv>;\$<LINK_ONLY:libprotobuf>;/usr/lib/x86_64-linux-gnu/libz.so;\$<LINK_ONLY:libjpeg-turbo>;\$<LINK_ONLY:libwebp>;/usr/lib/x86_64-linux-gnu/libpng.so;/usr/lib/x86_64-linux-gnu/libz.so;\$<LINK_ONLY:libtiff>;\$<LINK_ONLY:libjasper>;\$<LINK_ONLY:IlmImf>;/usr/lib/x86_64-linux-gnu/libz.so;\$<LINK_ONLY:ittnotify>;\$<LINK_ONLY:quirc>"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:dl>;\$<LINK_ONLY:m>;\$<LINK_ONLY:pthread>;\$<LINK_ONLY:rt>;/usr/lib/x86_64-linux-gnu/libz.so;\$<LINK_ONLY:libjpeg-turbo>;\$<LINK_ONLY:libpng>;\$<LINK_ONLY:libtiff>;\$<LINK_ONLY:libjasper>;\$<LINK_ONLY:IlmImf>;/usr/lib/x86_64-linux-gnu/libz.so;\$<LINK_ONLY:ittnotify>"
 )
 
 if(CMAKE_VERSION VERSION_LESS 2.8.12)

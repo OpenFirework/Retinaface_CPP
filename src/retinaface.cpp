@@ -106,8 +106,8 @@ RetinaFace::~RetinaFace() {
 }
 
 int RetinaFace::Initial(std::string model_path) {
-  std::string parampath = model_path + "/retinaface_face.param";
-  std::string binpath = model_path + "/retinaface_face.bin";
+  std::string parampath = model_path + "/retiface_carton.param";
+  std::string binpath = model_path + "/retiface_carton.bin";
   net_->load_param(parampath.c_str());
   net_->load_model(binpath.c_str());
 }
@@ -137,22 +137,13 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
 
   ncnn::Mat score_blob, bbox_blob;
   ex.extract("output0", bbox_blob); 
- // ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句，
-  ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
+  ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句，
+  //ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
   //post-process
   ncnn::Mat out_loc;
   out_loc.create(4,bbox_blob.h);
   decode(bbox_blob, Anchors_, out_loc, width_, height_);  // decode,将rect解码为真实的图片尺寸
-  /*
-  for (int q=0; q<out_loc.c; q++) {
-    for (int y=0; y<out_loc.h; y++) {
-      out_loc[4*y] = out_loc[4*y]*width_;        //x0
-      out_loc[4*y+1] = out_loc[4*y+1]*height_;   //y0
-      out_loc[4*y+2] = out_loc[4*y+2]*width_;    //width
-      out_loc[4*y+3] = out_loc[4*y+3]*height_;   //height
-    }
-  }
- */
+ 
   faces.clear();
   vector<FaceObject> tempfaces;
   //将大于阈值的框存进temfaces，准备下一步的nms

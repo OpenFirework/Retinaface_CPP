@@ -14,7 +14,8 @@ ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语
 
 ```
 
-编译和测试
+编译和测试  
+在ubuntu 20.04上进行编译和测试  
 ```
 make 
 ./Retinaface test_carton.list

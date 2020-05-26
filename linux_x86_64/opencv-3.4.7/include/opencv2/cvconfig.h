@@ -102,8 +102,8 @@
 /* #undef HAVE_INTELPERC */
 
 /* Intel Integrated Performance Primitives */
-#define HAVE_IPP
-#define HAVE_IPP_ICV
+/* #undef HAVE_IPP */
+/* #undef HAVE_IPP_ICV */
 /* #undef HAVE_IPP_IW */
 /* #undef HAVE_IPP_IW_LL */
 
@@ -114,7 +114,7 @@
 #define HAVE_JPEG
 
 /* libpng/png.h needs to be included */
-#define HAVE_LIBPNG_PNG_H
+/* #undef HAVE_LIBPNG_PNG_H */
 
 /* GDCM DICOM codec */
 /* #undef HAVE_GDCM */

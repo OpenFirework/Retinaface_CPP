@@ -5,8 +5,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
  
-#include <string.h>
-#include <errno.h>
+int32_t NowMicros();
 
 //判断目录是否存在
 int IsFolderExist(const char* path) {
@@ -64,8 +63,10 @@ int main(int argc, char** argv) {
     string filename = list_test_vec[i].substr(pos+1,list_test_vec[i].length()-pos);
     bgr = cv::imread(list_test_vec[i]);
     vector<FaceObject> faces;
+    int start = NowMicros();
     facedetect.DetectFace(bgr,faces);
-
+    int end = NowMicros();
+    std::cout<<"all spend:"<<(end-start)<<"ms"<<std::endl;
     for (int i=0;i<faces.size();i++) {
       FaceObject face = faces[i];
       cv::rectangle(bgr, cv::Point(face.rect.x, face.rect.y),

@@ -1,5 +1,17 @@
 #include "retinaface.h"
 
+#include <string.h>
+#include <errno.h>
+#include <string>
+#include <vector>
+#include <sys/time.h>
+
+int32_t NowMicros() {
+    struct timeval tv;
+    gettimeofday(&tv,nullptr);
+    return static_cast<int32_t>(tv.tv_sec)*1000+tv.tv_usec/1000;
+}
+
 float intersection_area(const FaceObject& a, const FaceObject& b) {
     cv::Rect_<float> inter = a.rect & b.rect;
     return inter.area();
@@ -108,13 +120,23 @@ RetinaFace::~RetinaFace() {
 int RetinaFace::Initial(std::string model_path) {
   std::string parampath = model_path + "/retiface_carton.param";
   std::string binpath = model_path + "/retiface_carton.bin";
-  net_->load_param(parampath.c_str());
-  net_->load_model(binpath.c_str());
+  ncnn::Option opt;
+  opt.use_int8_inference = true; 
+  opt.lightmode = true;  
+  opt.num_threads = 4;
+  net_->opt = opt;
+  int ret = net_->load_param(parampath.c_str());
+  if(ret !=0) {
+    return ret;
+  }
+  ret = net_->load_model(binpath.c_str());
+  return ret;
 }
 
 
 int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   //先pad将图像填补为正方形,pre-process
+  int start = NowMicros();
   cv::Mat pad_img;
   int long_size = max(img.cols,img.rows);
   if (long_size == img.cols) {
@@ -132,6 +154,10 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   //ncnn 输入
   ncnn::Mat in = ncnn::Mat::from_pixels(bgr.data, ncnn::Mat::PIXEL_BGR, width_, height_);
   in.substract_mean_normalize(mean_vals_,0);
+  int end = NowMicros();
+  std::cout<<"pre-post:"<<(end-start)<<"ms"<<std::endl;
+
+  start = NowMicros();
   ncnn::Extractor ex = net_->create_extractor();
   ex.input("input0", in);
 
@@ -139,6 +165,8 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   ex.extract("output0", bbox_blob); 
   ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句，
   //ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
+  end = NowMicros();
+   std::cout<<"net extract:"<<(end-start)<<"ms"<<std::endl;
   //post-process
   ncnn::Mat out_loc;
   out_loc.create(4,bbox_blob.h);
@@ -167,8 +195,10 @@ int RetinaFace::DetectFace(const cv::Mat img,vector<FaceObject> &faces) {
   
   //执行nms
   std::vector<int> picked;
+  start = NowMicros();
   nms_sorted_bboxes(tempfaces, picked, 0.4);
-
+  end = NowMicros();
+  std::cout<<"nms:"<<(end-start)<<"ms"<<std::endl;
   //上面的操作是在640×640的图片上做的（先pad图片到正方形，再resize到640*640)
   //因此下面的操作是将检测框，反映射回到原图像的尺寸
   float scale = long_size*1.0/width_; //width_与height_相等

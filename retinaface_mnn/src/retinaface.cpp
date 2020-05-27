@@ -107,8 +107,9 @@ RetinaFace::RetinaFace() {
 }
 
 RetinaFace::~RetinaFace() {
-  if(net_ != 0) {
-    delete net_;
+  if(net_ != nullptr) {
+    net_->releaseModel();
+    net_->releaseSession(sess_facenet_);
   }
   Anchors_.clear();
 }

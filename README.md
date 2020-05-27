@@ -1,27 +1,22 @@
-# Retinaface NCNN
+# Retinaface CPP
 
-包含编译好的linux x86_64平台下的ncnn、opencv静态库，可以直接编译测试  
-包含两个模型retiface_pig、retinaface_carton，一个检测猪脸，一个检测动漫卡通人物的人脸
-可以通过retinaface.cpp中代码进行配置，修改下面的代码即可
-```
-std::string parampath = model_path + "/retiface_pig.param";
-std::string binpath = model_path + "/retiface_pig.bin";
+包含使用MNN、NCNN部署的代码  
+包含编译好的linux x86_64(ubuntu20.04)平台下的ncnn、MNN、opencv库，可以直接编译测试,需要修改makefile中的路径  
+包含一个模型可以检测动漫卡通人物的人脸
 
-ncnn::Mat score_blob, bbox_blob;
-ex.extract("output0", bbox_blob); 
-//ex.extract("486", score_blob);  //选择retiface_carton模型时，使用该语句
-ex.extract("543", score_blob);    //选择retinaface_pig模型时，使用该语句
-
-```
 
 编译和测试  
 在ubuntu 20.04上进行编译和测试  
 ```
-make 
-./Retinaface test_carton.list
+make Retinaface_NCNN
+./Retinaface_NCNN test_carton.list
+
+make Retinaface_MNN
+./Retinaface_MNN test_carton.list
 ```
 
 ## reference 
 https://github.com/biubug6/Pytorch_Retinaface       
 https://github.com/Tencent/ncnn   
+https://github.com/alibaba/MNN  
 https://github.com/daquexian/onnx-simplifier

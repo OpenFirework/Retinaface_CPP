@@ -26,26 +26,6 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/liblibpng.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := IlmImf
-LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/libIlmImf.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := ittnotify
-LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/libittnotify.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := tegra_hal
-LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/libtegra_hal.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := libtiff
-LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/liblibtiff.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE := libjpeg-turbo
 LOCAL_SRC_FILES := $(LOCAL_PATH)/../../armv7a/opencv-3.4.7/lib/liblibjpeg-turbo.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -124,7 +104,7 @@ LOCAL_WHOLE_STATIC_LIBRARIES += ncnn opencv_world
 
 
 LOCAL_STATIC_LIBRARIES +=  ncnn omp \
-			    opencv_world tegra_hal IlmImf ittnotify libjasper libpng libtiff \
+			    opencv_world libjasper libpng \
 			    libjpeg-turbo zlib facedetect
 
 include $(BUILD_EXECUTABLE)

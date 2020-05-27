@@ -1,0 +1,11 @@
+MNNConverter Version: 0.2.1.5git - MNN @ 2018
+
+
+Start to Convert Other Model Format To MNN Model...
+[18:00:40] :29: ONNX Model ir version: 4
+Start to Optimize the MNN Net...
+[18:00:40] :20: Inputs: input0
+[18:00:40] :37: Outputs: 486, Type = Softmax
+[18:00:40] :37: Outputs: output0, Type = Concat
+Converted Done!
+

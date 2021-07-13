@@ -1,1 +1,196 @@
-to be cotinue
+
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+#include <vector>
+namespace py = pybind11;
+ 
+template <typename T>
+T square(T x) {
+    return x * x;
+}
+
+class dog{
+public:
+    dog() {
+        x = 1;
+        y = 2;
+        z = 3;
+    }
+    void print() {
+        std::cout<<"i am a dog\n";
+    } 
+
+    int x;
+    int y;
+    int z; 
+};
+
+class cat{
+public:
+    cat() {
+        x = 4;
+    }
+
+    void print() {
+        std::cout<<"i am a cat\n";
+    }   
+    int x; 
+};
+
+template<class T>
+class test{
+public:
+    test(T ani) {
+        a = ani;
+        val = ani.x;
+        std::cout<<"data size is " << sizeof(T) <<", val = " <<
+        val<<"\n";
+    }
+
+    int Initial(std::string model_path) {
+        std::cout<<"modle path is " << model_path << std::endl;
+        return 0;
+    }
+    void print() {
+        a.print();
+    }
+    T a;
+    int val;
+};
+
+class pytest{
+public:
+    pytest(dog t) {
+       // void *handle = new dog();
+        d = new dog();
+        //实际使用中注意深度拷贝
+        *d = t; 
+
+        std::cout<<"dog instance \n";
+    }
+
+    pytest(cat t) {
+        c = new cat();
+        //实际使用中注意深度拷贝
+        *c = t;
+        std::cout<<"cat instance \n";
+    }
+    
+    int Initial(std::string model_path) {
+        std::cout<<"modle path is " << model_path << std::endl;
+        return 0;
+    }
+
+    void print() {
+        if(d != nullptr ) {
+            d->print();
+        }
+        if(c != nullptr ) {
+            c->print();
+        }
+    }
+
+    ~pytest() {
+        if(d != nullptr) {
+            delete d;
+        }
+        if( c != nullptr ) {
+            delete c;
+        }
+    }
+
+    std::string cl_name;
+
+    dog *d = nullptr;
+    cat *c = nullptr;
+};
+
+
+typedef struct face_rect_{
+    int x;
+    int y;
+    int w;
+    int h;
+    float score;
+    // int getx() { return x; }
+    // int gety() { return y; }
+    // int getw() { return w; }
+    // int geth() { return h; }
+    // float getscore { return score; }
+}face_rect;
+
+std::vector<face_rect> test_vector(int len, py::array_t<double, py::array::c_style | py::array::forcecast> array) {
+    face_rect a;
+    a.x = 1;
+    a.y = 2;
+    a.h = 3;
+    a.w = 4;
+    a.score = 0.98;
+    std::vector<face_rect> results;
+    for(int i=0; i<len; i++) {
+        results.push_back(a);
+    }
+
+    std::vector<double> array_vec(array.size());
+    std::memcpy(array_vec.data(),array.data(),array.size()*sizeof(double));
+    for(int i=0;i < array_vec.size(); i++) {
+        std::cout<<array_vec[i]<<",";
+    }
+    std::cout<<std::endl;
+
+    return results;
+}
+
+
+
+PYBIND11_MODULE(example, m) {
+    m.doc() = "pybind11 example plugin"; // optional module docstring
+
+    py::class_<dog>(m, "dog")
+    .def(py::init<>())
+    .def("print", &dog::print);
+
+    py::class_<cat>(m, "cat")
+    .def(py::init<>())
+    .def("print", &cat::print);
+
+
+    //first method
+    py::class_<test<dog>>(m, "testdog")
+    .def(py::init<dog>())
+    .def("Initial", &test<dog>::Initial)
+    .def("print",&test<dog>::print);
+
+     py::class_<test<cat>>(m, "testcat")
+    .def(py::init<cat>())
+    .def("Initial", &test<cat>::Initial)
+    .def("print",&test<cat>::print);
+
+    //second method
+    py::class_<pytest>(m, "pytest")
+    .def(py::init<cat>())
+    .def(py::init<dog>())
+    .def("Initial", &pytest::Initial)
+    .def("print",&pytest::print);
+
+
+    //test vector
+    py::class_<face_rect>(m, "face_rect")
+    .def(py::init<>())
+    .def_readwrite("x",&face_rect::x)
+    .def_readwrite("y",&face_rect::y)
+    .def_readwrite("w",&face_rect::w)
+    .def_readwrite("h",&face_rect::h)
+    .def_readwrite("score",&face_rect::score)
+    .def("__repr__",
+        [](const face_rect &a) {
+            return std::to_string(a.x)+","+std::to_string(a.y) +","+std::to_string(a.w)+","+std::to_string(a.h)+","+std::to_string(a.score)+"\n";;
+        });
+
+    m.def("test_vector", &test_vector);
+
+ }
+
+
+ //g++ -std=c++11 -O3 -shared -fPIC $(python3 -m pybind11 --includes)  -I/home/users/jiangkuan.liu/github_opencode/pybind11/include -I/usr/include/python3.6m pybind11_test/template_test.cpp -o  example$(python3-config --extension-suffix)

@@ -18,6 +18,11 @@ make Retinaface_MNN
 ## 增加NDK构建脚本和andrid armv7a库 
 可以构建android下的c++可执行程序，ncnn、MNN、opencv库采用ndk-19r编译，api-leval为21
 
+## add python api use pybind11
+```shell
+g++ -std=c++11 -O3 -shared -fPIC  $(python3 -m pybind11 --includes) -I/usr/include/python3.8m py_retina.cpp -I./ -L./ -ldetect_ncnn -o retinacarton$(python3-config --extension-suffix)
+```
+
 
 ## reference 
 https://github.com/biubug6/Pytorch_Retinaface       

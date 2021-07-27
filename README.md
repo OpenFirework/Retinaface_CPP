@@ -23,6 +23,12 @@ make Retinaface_MNN
 g++ -std=c++11 -O3 -shared -fPIC  $(python3 -m pybind11 --includes) -I/usr/include/python3.8m py_retina.cpp -I./ -L./ -ldetect_ncnn -o retinacarton$(python3-config --extension-suffix)
 ```
 
+## 结果示例
+![avatar](test_results/op.jpg)  
+![avatar](test_results/pegi.jpg)  
+![avatar](test_results/pkc2.jpg)  
+![avatar](test_results/zhuzhu.jpg）
+
 
 ## reference 
 https://github.com/biubug6/Pytorch_Retinaface       

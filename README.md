@@ -27,7 +27,7 @@ g++ -std=c++11 -O3 -shared -fPIC  $(python3 -m pybind11 --includes) -I/usr/inclu
 ![avatar](test_results/op.jpg)  
 ![avatar](test_results/pegi.jpg)  
 ![avatar](test_results/pkc2.jpg)  
-![avatar](test_results/zhuzhu.jpg）
+![avatar](test_results/zhuzhu.jpg)
 
 
 ## reference 
